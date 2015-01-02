@@ -19,6 +19,12 @@ class LaravelWechatBundleServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->package('xjtuwangke/laravel-wechat-bundle');
+		$this->app['command.wechat.updateMenu'] = $this->app->share(
+			function () {
+				return new WechatUpdateMenuCommand;
+			}
+		);
+		$this->commands( 'command.wechat.updateMenu' );
 	}
 
 	/**
