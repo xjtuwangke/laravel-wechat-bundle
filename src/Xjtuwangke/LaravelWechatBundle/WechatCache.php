@@ -9,7 +9,7 @@
 namespace Xjtuwangke\LaravelWechatBundle;
 
 
-class WechatCache implements Wechat\WechatCacheInterface{
+class WechatCache implements \Wechat\WechatCacheInterface{
 
     public function put( $key , $value , $expires ){
         $expiresAt = \Carbon\Carbon::now()->addSeconds( $expires );
