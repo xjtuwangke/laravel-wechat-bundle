@@ -48,8 +48,8 @@ class WechatUpdateMenuCommand extends Command {
     public function fire()
     {
         //
-        $menu = \Config::get('laravel-wechat-bundle::menu');
-        $options = \Config::get('laravel-wechat-bundle::options');
+        $menu = \Config::get('laravel-wechat-bundle::config.menu');
+        $options = \Config::get('laravel-wechat-bundle::config.options');
         $menu = json_encode( $menu , JSON_UNESCAPED_UNICODE );
         $wechat = new \Wechat\Wechat( $options );
         if( $wechat->createMenu( $menu ) ){
