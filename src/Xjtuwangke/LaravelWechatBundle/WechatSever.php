@@ -40,12 +40,13 @@ class WechatSever extends \Controller{
         $this->msgType = $this->wechat->getRev()->getRevType();
         $this->open_id = $this->wechat->getRevFrom();
         $this->revData = $this->wechat->getRevData();
+        $this->revDataDot = array_dot( $this->revData );
         $this->msg_id = $this->getRevData( 'MsgId' );
     }
 
-    public function getRevData( $key , $default = null ){
+    public function getRevData( $key , $default = null , $data = array() ){
         $key = strtolower( $key );
-        foreach( $this->revData as $name => $value ){
+        foreach( $this->revDataDot as $name => $value ){
             if( strtolower( $name ) == $key ){
                 return $value;
             }
@@ -148,10 +149,59 @@ class WechatSever extends \Controller{
                     $this->getRevData( 'EventKey' )
                 );
                 break;
+            case 'scancode_push':
+                $this->onEventScancodePush(
+                    $this->getRevData( 'EventKey' ) ,
+                    $this->getRevData( 'ScanCodeInfo.ScanType' ) ,
+                    $this->getRevData( 'ScanCodeInfo.ScanResult' )
+                );
+                break;
+            case 'scancode_waitmsg':
+                $this->onEventScancodeWaitmsg(
+                    $this->getRevData( 'EventKey' ) ,
+                    $this->getRevData( 'ScanCodeInfo.ScanType' ) ,
+                    $this->getRevData( 'ScanCodeInfo.ScanResult' )
+                );
+                break;
+            case 'location_select':
+                $this->onEventLocationSelect(
+                    $this->getRevData( 'EventKey' ) ,
+                    $this->getRevData( 'SendLocationInfo.Location_X' ) ,
+                    $this->getRevData( 'SendLocationInfo.Location_Y' ) ,
+                    $this->getRevData( 'SendLocationInfo.Scale' ) ,
+                    $this->getRevData( 'SendLocationInfo.Label' ) ,
+                    $this->getRevData( 'SendLocationInfo.Poiname' )
+                );
+                break;
+            case 'pic_sysphoto':
+                $this->onEventPicSysphoto(
+                    $this->getRevData( 'EventKey' ) ,
+                    $this->getRevData( 'SendPicsInfo.Count' ) ,
+                    $this->wechat->getRevSendPicsInfo()
+                );
+                break;
+            case 'pic_photo_or_album':
+                $this->onEventPicPhotoOrAlbum(
+                    $this->getRevData( 'EventKey' ) ,
+                    $this->getRevData( 'SendPicsInfo.Count' ) ,
+                    $this->wechat->getRevSendPicsInfo()
+                );
+                break;
+            case 'pic_weixin':
+                $this->onEventPicWeixin(
+                    $this->getRevData( 'EventKey' ) ,
+                    $this->getRevData( 'SendPicsInfo.Count' ) ,
+                    $this->wechat->getRevSendPicsInfo()
+                );
+                break;
             default:
                 $this->onEventUnknown();
         }
     }
+
+    public function onEventScancodePush( $eventKey , $scanType , $scanResult ){}
+
+    public function onEventScancodeWaitmsg( $eventKey , $scanType , $scanResult ){}
 
     public function onEventSubscribe( $qrscene , $ticket ){}
 
@@ -161,11 +211,19 @@ class WechatSever extends \Controller{
 
     public function onEventLocation( $lat , $log , $precision ){}
 
+    public function onEventLocationSelect( $eventKey , $lat , $log , $scale , $label , $poiname ){}
+
     public function onEventClick( $key ){}
 
     public function onEventView( $view ){}
 
     public function onEventUnknown(){}
+
+    public function onEventPicSysphoto( $eventKey , $count , $picInfo ){}
+
+    public function onEventPicPhotoOrAlbum( $eventKey , $count , $picInfo ){}
+
+    public function onEventPicWeixin( $eventKey , $count , $picInfo ){}
 
 
 
