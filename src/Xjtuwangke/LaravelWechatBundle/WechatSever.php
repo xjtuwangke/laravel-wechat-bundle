@@ -149,7 +149,7 @@ class WechatSever extends \Controller{
                 );
                 break;
             default:
-                $this->onEventKnown();
+                $this->onEventUnknown();
         }
     }
 
@@ -165,7 +165,7 @@ class WechatSever extends \Controller{
 
     public function onEventView( $view ){}
 
-    public function onEventKnown(){}
+    public function onEventUnknown(){}
 
 
 
