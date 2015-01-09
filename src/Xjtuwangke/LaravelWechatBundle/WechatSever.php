@@ -31,7 +31,7 @@ class WechatSever extends \Controller{
             WechatLogger::access( 'access' , $context );
         }
 
-        $this->wechat = new \Wechat\Wechat( \Config::get( 'laravel-wechat-bundle::config.options' ) );
+        $this->wechat = WechatFactory::create();
         $this->wechat->valid();
 
         if( $this->logger ){
