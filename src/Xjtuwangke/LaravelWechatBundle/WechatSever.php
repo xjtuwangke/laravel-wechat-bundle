@@ -225,7 +225,20 @@ class WechatSever extends \Controller{
 
     public function onEventPicWeixin( $eventKey , $count , $picInfo ){}
 
-
+    /**
+     * @return array array( openid , userinfo )
+     */
+    public static function oauth(){
+        $wechat = WechatFactory::create();
+        $access_token = $wechat->getOauthAccessToken();
+        if( ! $access_token ){
+            return array( null , array() );
+        }
+        else{
+            $userinfo = $wechat->getOauthUserinfo( $access_token['access_token'] , $access_token['openid'] );
+            return array( $access_token['openid'] , $userinfo );
+        }
+    }
 
 
 }
