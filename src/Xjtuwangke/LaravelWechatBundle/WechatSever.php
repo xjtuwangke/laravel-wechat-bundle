@@ -39,7 +39,7 @@ class WechatSever extends \Controller{
         }
         $this->msgType = $this->wechat->getRev()->getRevType();
         $this->open_id = $this->wechat->getRevFrom();
-        $this->revData = $this->wechat->getRevData();
+        $this->revData = (array)$this->wechat->getRevData();
         $this->revDataDot = array_dot( $this->revData );
         $this->msg_id = $this->getRevData( 'MsgId' );
     }
@@ -68,27 +68,27 @@ class WechatSever extends \Controller{
                 $this->onText( $this->getRevData( 'content' ) );
                 break;
             case \Wechat\Wechat::MSGTYPE_IMAGE:
-                $this->onImage( $this->wechat->getRevData( 'PicUrl' )  , $this->wechat->getRevData( 'MediaId' ) );
+                $this->onImage( $this->getRevData( 'PicUrl' )  , $this->getRevData( 'MediaId' ) );
                 break;
             case \Wechat\Wechat::MSGTYPE_VOICE:
-                $this->onVoice( $this->wechat->getRevData( 'Format' )  , $this->wechat->getRevData( 'MediaId' ) );
+                $this->onVoice( $this->getRevData( 'Format' )  , $this->getRevData( 'MediaId' ) );
                 break;
             case \Wechat\Wechat::MSGTYPE_VIDEO:
-                $this->onVideo( $this->wechat->getRevData( 'ThumbMediaId' )  , $this->wechat->getRevData( 'MediaId' ) );
+                $this->onVideo( $this->getRevData( 'ThumbMediaId' )  , $this->getRevData( 'MediaId' ) );
                 break;
             case \Wechat\Wechat::MSGTYPE_LOCATION:
                 $this->onLocation(
-                    $this->wechat->getRevData( 'Location_X' ) ,
-                    $this->wechat->getRevData( 'Location_Y' ) ,
-                    $this->wechat->getRevData( 'Scale' ) ,
-                    $this->wechat->getRevData( 'Label' )
+                    $this->getRevData( 'Location_X' ) ,
+                    $this->getRevData( 'Location_Y' ) ,
+                    $this->getRevData( 'Scale' ) ,
+                    $this->getRevData( 'Label' )
                 );
                 break;
             case \Wechat\Wechat::MSGTYPE_LINK:
                 $this->onLink(
-                    $this->wechat->getRevData( 'Title' ) ,
-                    $this->wechat->getRevData( 'Description') ,
-                    $this->wechat->getRevData( 'Url')
+                    $this->getRevData( 'Title' ) ,
+                    $this->getRevData( 'Description') ,
+                    $this->getRevData( 'Url')
                 );
                 break;
             case \Wechat\Wechat::MSGTYPE_EVENT:
